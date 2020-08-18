@@ -22,6 +22,8 @@
 ### user - client
 
 1. As a user, I would like an place to change the number of votes per round.
+    * build a back facing html to take user input and apply to.
+    *   
 
 2. as a user i would like to beable to add a items to the voteing list.
 
@@ -30,6 +32,7 @@
 ### user - voter
 
 1. as a user i would like to see a short description of the items i am voting on.
+    *
 
 2. as a user i would like to save my votes for each item and see them somewhere.
 
