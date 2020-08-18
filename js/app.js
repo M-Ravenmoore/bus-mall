@@ -50,14 +50,15 @@ function getRandomMax(max){
 }
 
 // event click generate random number between 0 and imgArr.length
+
 function handleClick(){
     console.log(`event.target is ${event.target.alt}`)
     for (var i = 0 ; i > imageArr.length;i++){
         if(event.target.alt === imageArr[i].alt){
-            imageArr[i].clicks++;
-        }
+            imageArr.push.clicks++;
+            }
     }        
-    console.log('user clicked');
+    console.log(`user clicked ${imageArr} it has ${imageArr[i].clicks} clicks`);
     parentElement.innerHTML = '';
     getRandomImgs();
     getRandomImgs();
