@@ -1,12 +1,14 @@
 var parentElement = document.getElementById('img-container');
 
 var imageArr = [];
+var maxVotes = 10;
 
 function Image(name, ext){
     this.filepath = `../img/${name}.${ext}`;
     this.alt = name;
     this.title = name;
     this.clicks = 0;
+    this.show = 0;
     
     imageArr.push(this);
 }
@@ -42,6 +44,13 @@ function getRandomImgs(){
     imageElement.setAttribute('alt', randomImg.alt);
     imageElement.setAttribute('title', randomImg.title);
     parentElement.appendChild(imageElement);
+    var labelElement = document.createElement('label');
+    var inputElement = document.createElement('input');
+    inputElement.setAttribute('type','radio');
+    inputElement.setAttribute('alt', randomImg.alt);
+    labelElement.innerHTML ="clickme";
+    labelElement.appendChild(inputElement);
+    parentElement.appendChild(labelElement)
 }
 
 
@@ -51,21 +60,23 @@ function getRandomMax(max){
 
 // event click generate random number between 0 and imgArr.length
 
-function handleClick(){
-    console.log(`event.target is ${event.target.alt}`)
-    for (var i = 0 ; i > imageArr.length;i++){
-        if(event.target.alt === imageArr[i].alt){
-            imageArr.push.clicks++;
-            }
+function userClick(){
+    var alt = event.target.alt;
+    maxVotes--
+        console.log(`event.target is ${event.target.alt}`)
+        for (var i = 0 ; i > imageArr.length;i++){
+            if(alt === imageArr[i].alt){
+                imageArr.push.clicks++;
+                }
+        }
+        console.log(`user clicked ${imageArr} it has ${imageArr.clicks} clicks`);
+        parentElement.innerHTML = '';
+        getRandomImgs();
+        getRandomImgs();
+        getRandomImgs();
     }        
-    console.log(`user clicked ${imageArr} it has ${imageArr[i].clicks} clicks`);
-    parentElement.innerHTML = '';
-    getRandomImgs();
-    getRandomImgs();
-    getRandomImgs();
-}
     
-parentElement.addEventListener('click', handleClick);
+parentElement.addEventListener('click', userClick);
 
 getRandomImgs();
 getRandomImgs();
