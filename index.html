@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html> 
-<head>
-      <title>Bus-Mall</title>
-      <link rel="stylesheet" href="css/reset.css"/>
-      <link rel="stylesheet" href="css/style.css"/>
-    </head>
-    <body>
-      <header>
-        <h1>Please pick your Prefered Item</h1>
-      </header>
+  <head>
+    <title>Bus-Mall</title>
+    <link rel="stylesheet" href="css/reset.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+  </head>
+  <body>
+    <header>
+      <h1>Please pick your Prefered Item</h1>
+    </header>
+    <main>
       <section id="img-container">
 
       </section>
-      <footer>
-          
-      </footer>
-  <script src='js/app.js'></script>
-    </body>
+      <section id="results">
+        <article id="rendered data">
+
+        </article>
+        <article id="charts">
+          <canvas id="myChart" width="400" height="400"></canvas>
+        </article>
+      </section>
+    </main>
+    <footer>
+        
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src='js/app.js'></script>
+  </body>
 </html>
