@@ -1,8 +1,11 @@
 var parentElement = document.getElementById('img-container');
 var dataParentElement = document.getElementById('rendered data');
 var maxVotes = 5;
-
-
+var lablesArr= []
+var clicksArr = []
+var looksArr = []
+var voteOnNum = 3
+var matchImages = []
 
 //constructor to make item instanaces
 function Image(name){    
@@ -13,14 +16,14 @@ function Image(name){
     
     console.log(this);
     this.clicks = 0;
-    this.show = 0;
+    this.looks = 0;
 }
 
 var bag = new Image('bag.jpg');
 var banana = new Image("banana.jpg");
 var bathroom = new Image("bathroom.jpg");
 var boots = new Image("boots.jpg");
-var breakfast = new Image("brakfast.jpg");
+var breakfast = new Image("breakfast.jpg");
 var bubblegum = new Image("bubblegum.jpg");
 var chair = new Image("chair.jpg");
 var cthulhu = new Image("cthulhu.jpg");
@@ -40,23 +43,36 @@ var wineglass = new Image("wine-glass.jpg")
 //must be below new objects for this project!!
 var objectArr = [bag,banana,bathroom,boots,breakfast,bubblegum,chair,cthulhu,dogduck,dragon,pen,petsweep,scissors,shark,sweep,tauntaun,unicorn,usb,watercan,wineglass];
 
-//helper functions
-console.log("line44",objectArr)
-// get a random image from the object list
 
+
+function imgSet(numberOfPics){
+    for(var i = 0;i<numberOfPics;i++){
+        getRandomImgs();
+    }
+}
 function getRandomImgs(){
-    var randomIndex = getRandomMax(objectArr.length)
-    console.log(randomIndex)
-    var randomImg = objectArr[randomIndex];
-    // randomImg.show++;
-    console.log(randomImg);
-// wants to be a seprate func when i have time
+
+    //randomize the images
+    var randomIndex = getRandomMax(objectArr.length);
+    
+//make an array with 6 non matching images to keep repitition down
+    while(matchImages.includes(randomIndex)){
+        randomIndex = getRandomMax(objectArr.length);
+      }
+    matchImages.push(randomIndex);
+    if(matchImages.length > 10){
+        matchImages.shift();
+    }
+    var randomImg = objectArr[randomIndex]
+
+
     var imageElement = document.createElement('img');
-    imageElement.setAttribute('src', randomImg.filepath);
-    imageElement.setAttribute('alt', randomImg.alt);
+    imageElement.setAttribute('src',randomImg.filepath);
+    imageElement.setAttribute('alt',randomImg.alt);
     imageElement.setAttribute('title', randomImg.title);
     parentElement.appendChild(imageElement);
-// wants to be a func
+    randomImg.looks++;
+    
     var labelElement = document.createElement('label');
     var inputElement = document.createElement('input');
     inputElement.setAttribute('type','radio');
@@ -65,62 +81,37 @@ function getRandomImgs(){
     labelElement.appendChild(inputElement);
     parentElement.appendChild(labelElement)
 }
-
+function pullInfo(){
+    for(var i = 0 ; i < objectArr.length; i++){
+    lablesArr.push(objectArr[i].alt);
+    clicksArr.push(objectArr[i].clicks);
+    looksArr.push(objectArr[i].looks);
+    }
+}
 
 function getRandomMax(max){
     return Math.floor(Math.random()* Math.floor(max));
 }
-
-// event click generate random number between 0 and imgArr.length
+// Puts text version of data on page
 function generateData(){
-    // put data on page
     for (var i = 0; i < objectArr.length; i++) {
-        var dataElement = document.createElement("data");
+        var dataElement = document.createElement("li");
         console.log(objectArr[i])
-        dataElement.textContent = objectArr[i].alt;
+        dataElement.textContent = `for product: ${objectArr[i].alt} it has ${objectArr[i].clicks} clicks and ${objectArr[i].looks} views`;
         console.log(objectArr[i]);
         dataParentElement.appendChild(dataElement);
     }
 }
-function userClick(){
-    var alt = event.target.alt;
-    maxVotes--;
-        console.log(`event.target is ${event.target}`)
-        if (maxVotes !== 0) {
-            for (var i = 0; i < objectArr.length; i++) {
-              if (alt === objectArr[i].alt) {
-                objectArr[i].clicks++;
-            }
-            console.log(`user clicked it has ${objectArr[i].clicks} clicks`);       
-            }
-            parentElement.innerHTML = '';
-            getRandomImgs();
-            getRandomImgs();
-            getRandomImgs();
-        } else{
-            parentElement.innerHTML = '';
-            generateData();
-            graph();
-        };
-}
-// function makeLables{
-//  var lablesArr= [];
-//  var dataArr = [];
-
-
-// }
-
-
+// creates the graphical data
 function graph(){
-    console.log("line108",objectArr[i].alt)
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [],
+            labels: lablesArr,
             datasets: [{
                 label: '# of Votes',
-                data: objectArr.clicks,
+                data: clicksArr,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -151,9 +142,27 @@ function graph(){
         }
     });
 }
+
+function userClick(){
+    var alt = event.target.alt;
+    maxVotes--;
+        console.log(`event.target is ${event.target}`)
+        if (maxVotes !== 0) {
+            for (var i = 0; i < objectArr.length; i++) {
+              if (alt === objectArr[i].alt) {
+                objectArr[i].clicks++;
+                }       
+            }
+            parentElement.innerHTML = '';
+            imgSet(voteOnNum);
+            } else{
+            parentElement.innerHTML = '';
+            pullInfo();
+            generateData();
+            graph();
+            };
+}
     
 parentElement.addEventListener('click', userClick);
 
-getRandomImgs();
-getRandomImgs();
-getRandomImgs();
+imgSet(voteOnNum);
