@@ -81,6 +81,10 @@ function generateData(){
         dataParentElement.appendChild(dataElement);
     }
 }
+function compileSaveData(){
+    var dataStorage =  JSON.stringify(imageObjects)
+    localStorage.setItem('voteingData', dataStorage);
+}
 // creates the graphical data
 function graph(){
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -175,6 +179,7 @@ function userClick(){
             imgSet(voteOnNum);
             } else{
             parentElement.innerHTML = '';
+            compileSaveData();
             pullInfo();
             generateData();
             graph();
