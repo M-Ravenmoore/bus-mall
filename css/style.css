@@ -9,3 +9,7 @@ img{
 data{
   list-style-type: square;
 }
+article{
+  max-width: 420px;
+  display: block;
+}
