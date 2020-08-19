@@ -6,6 +6,11 @@ var voteOnNum = 3
 var imageObjects = [];
 var matchImages = [] ;
 
+// start game button
+    //create lable tag
+    //crate input element
+    //fill tag and elelment
+    //
 
 //for graph use only right now
 var lablesArr= [];
@@ -23,7 +28,6 @@ function Image(name){
     this.looks = 0;
     imageObjects.push(this);
 }
-
 function objectBuilder(){
     for(var i =0;i < imageNames.length ; i++){
         console.log(imageObjects)
@@ -32,12 +36,6 @@ function objectBuilder(){
     }
 }
 
-//sets number of images that shows up to be voted on
-function imgSet(numberOfPics){
-    for(var i = 0;i<numberOfPics;i++){
-        getRandomImgs();
-    }
-}
 //generate random img  and creates display
 function getRandomImgs(){
     //randomize the images
@@ -67,12 +65,9 @@ function pullInfo(){
     looksArr.push(imageObjects[i].looks);
     }
 }
-//does math to get a random number between 0 and max
-function getRandomMax(max){
-    return Math.floor(Math.random()* Math.floor(max));
-}
+
 // Puts text version of data on page
-function generateData(){
+function renderData(){
     for (var i = 0; i < imageObjects.length; i++) {
         var dataElement = document.createElement("li");
         console.log(imageObjects[i])
@@ -80,10 +75,6 @@ function generateData(){
         console.log(imageObjects[i]);
         dataParentElement.appendChild(dataElement);
     }
-}
-function compileSaveData(){
-    var dataStorage =  JSON.stringify(imageObjects)
-    localStorage.setItem('voteingData', dataStorage);
 }
 // creates the graphical data
 function graph(){
@@ -164,8 +155,36 @@ function graph2(){
         }
     });
 }
-//click handeler
-function userClick(){
+
+//HELPING FUNCTIONS
+
+//does math to get a random number between 0 and max
+function getRandomMax(max){
+    return Math.floor(Math.random()* Math.floor(max));
+}
+//sets number of images that shows up to be voted on
+function imgSet(numberOfPics){
+    for(var i = 0;i<numberOfPics;i++){
+        getRandomImgs();
+    }
+}
+//data STORAGE SECTON
+function compileSaveData(){
+    var dataStorage =  JSON.stringify(imageObjects)
+    localStorage.setItem('voteingData', dataStorage);
+}
+function retriveSaveData(){
+    var savedVoteData = localStorage.getItem('voteingData');  
+    savedVoteData = JSON.parse(voteingData) 
+}
+function render(){
+    renderData();
+    graph();
+    graph2();
+}
+
+//imageclick handeler
+function userImageClick(){
     var alt = event.target.alt;
     maxVotes--;
         console.log(`event.target is ${event.target}`)
@@ -181,13 +200,11 @@ function userClick(){
             parentElement.innerHTML = '';
             compileSaveData();
             pullInfo();
-            generateData();
-            graph();
-            graph2();
+            render();
             };
 }
 
 objectBuilder();
 imgSet(voteOnNum);
-parentElement.addEventListener('click', userClick);
+parentElement.addEventListener('click', userImageClick);
 
