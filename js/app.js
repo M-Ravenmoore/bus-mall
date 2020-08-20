@@ -186,8 +186,10 @@ function compileSaveData(){
 function retriveSaveData(){
     var savedVoteData = localStorage.getItem('voteingData');  
     savedVoteData = JSON.parse(voteingData);
-    imageObjects= savedVoteData;
+    imageObjects = savedVoteData;
     console.log(savedVoteData);
+    console.log(imageObjects);
+
 };
 function render(){
     renderData();
