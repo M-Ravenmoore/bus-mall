@@ -1,14 +1,15 @@
 var imageparentElement = document.getElementById('img-box');
 var dataParentElement = document.getElementById('rendered data');
-var startParentElement = document.getElementById('img-box')
+var startParentElement = document.getElementById('start-box');
 var imageNames = ['bag.jpg',"banana.jpg","bathroom.jpg","boots.jpg","breakfast.jpg","bubblegum.jpg","chair.jpg","cthulhu.jpg","dog-duck.jpg","dragon.jpg","pen.jpg","pet-sweep.jpg","scissors.jpg","shark.jpg","sweep.png","tauntaun.jpg","unicorn.jpg","usb.gif","water-can.jpg","wine-glass.jpg"];
 var maxVotes = 5;
-var voteOnNum = 3
+var voteOnNum = 3;
 var imageObjects = [];
-var matchImages = [] ;
+var matchImages = [];
 var lablesArr= [];
 var clicksArr = [];
 var looksArr = [];
+
 
 startGame();
 
@@ -20,39 +21,33 @@ function startGame(){
     startButton.setAttribute("type","button");
     startElement.appendChild(startButton);
     startParentElement.appendChild(startElement);
-    startClick();
-}
-
+};
+    
 function startClick(event){
-    if(localStorage.getItem('products') === null ){
+    if(localStorage.getItem('products') === null){
         startParentElement.innerHTML = '';
         objectBuilder();
         imgSet(voteOnNum);
     }else{
-
-        retriveSaveData()
-        imgSet(voteOnNum)
+        retriveSaveData();
+        imgSet(voteOnNum);
     }
-}
-startParentElement.addEventListener('click', startClick);      
-        //constructor to make item instanaces
+};
+//constructor to make item instanaces
 function Image(name){    
     this.filepath = `../img/${name}`;
     this.alt = `${name}`.slice(0,-4);
     this.title = `${name}`.slice(0,-4);
-    console.log(this);
     this.clicks = 0;
     this.looks = 0;
     imageObjects.push(this);
-}
+};
 function objectBuilder(){
     for(var i =0;i < imageNames.length ; i++){
-        console.log(imageObjects)
         new Image(imageNames[i]);
-        console.log('line 34 this is my objects', imageObjects[i] )
-    }
-}
-
+        console.log('line 34 this is my objects', imageObjects)
+    };
+};
 //generate random img  and creates display
 function getRandomImgs(){
     //randomize the images
@@ -73,7 +68,7 @@ function getRandomImgs(){
     imageElement.setAttribute('title', randomImg.title);
     imageparentElement.appendChild(imageElement);
     randomImg.looks++;
-}
+};
 // pulls data out of objects and puts it in to global arrays
 function pullInfo(){
     for(var i = 0 ; i < imageObjects.length; i++){
@@ -81,18 +76,17 @@ function pullInfo(){
     clicksArr.push(imageObjects[i].clicks);
     looksArr.push(imageObjects[i].looks);
     }
-}
-
+};
 // Puts text version of data on page
 function renderData(){
     for (var i = 0; i < imageObjects.length; i++) {
         var dataElement = document.createElement("li");
-        console.log(imageObjects[i])
+        console.log(imageObjects[i]);
         dataElement.textContent = `for product: ${imageObjects[i].alt} it has ${imageObjects[i].clicks} clicks and ${imageObjects[i].looks} views`;
         console.log(imageObjects[i]);
         dataParentElement.appendChild(dataElement);
     }
-}
+};
 // creates the graphical data
 function graph(){
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -132,7 +126,7 @@ function graph(){
             }
         }
     });
-}
+};
 function graph2(){
     var ctx = document.getElementById('myChart2').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -171,58 +165,56 @@ function graph2(){
             }
         }
     });
-}
+};
 
 //HELPING FUNCTIONS
-
 //does math to get a random number between 0 and max
 function getRandomMax(max){
     return Math.floor(Math.random()* Math.floor(max));
-}
+};
 //sets number of images that shows up to be voted on
 function imgSet(numberOfPics){
-    for(var i = 0;i<numberOfPics;i++){
+    for(var i = 0;i < numberOfPics;i++){
         getRandomImgs();
-    }
-}
+    };
+};
 //data STORAGE SECTON
 function compileSaveData(){
-    var dataStorage =  JSON.stringify(imageObjects)
+    var dataStorage =  JSON.stringify(imageObjects);
     localStorage.setItem('voteingData', dataStorage);
-}
+};
 function retriveSaveData(){
     var savedVoteData = localStorage.getItem('voteingData');  
     savedVoteData = JSON.parse(voteingData);
-}
+    imageObjects= savedVoteData;
+    console.log(savedVoteData);
+};
 function render(){
     renderData();
     graph();
     graph2();
-}
-
+};
 //imageclick handeler
 function userImageClick(){
     var alt = event.target.alt;
-    
-        console.log(`event.target is ${event.target.alt}`)
-        if (maxVotes !== 0) {
-            for (var i = 0; i < imageObjects.length; i++) {
-              if (alt === imageObjects[i].alt) {
-                imageObjects[i].clicks++;
-                maxVotes--;
-                imageparentElement.innerHTML = '';
-                imgSet(voteOnNum);
-              }
-            }
-        }else{
+    console.log(`event.target is ${event.target.alt}`)
+    if (maxVotes !== 0) {
+        for (var i = 0; i < imageObjects.length; i++) {
+            if (alt === imageObjects[i].alt) {
+            imageObjects[i].clicks++;
+            maxVotes--;
             imageparentElement.innerHTML = '';
-            compileSaveData();
-            pullInfo();
-            render();
-        };
-}
+            imgSet(voteOnNum);
+            }
+        }
+    }else{
+        compileSaveData();
+        pullInfo();
+        imageparentElement.innerHTML = '';
+        render();
+    };
+};
 
-// objectBuilder();
-// imgSet(voteOnNum);
+startParentElement.addEventListener('click', startClick);  
 imageparentElement.addEventListener('click', userImageClick);
 
