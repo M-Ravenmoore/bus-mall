@@ -1,28 +1,45 @@
-var parentElement = document.getElementById('img-container');
+var imageparentElement = document.getElementById('img-box');
 var dataParentElement = document.getElementById('rendered data');
+var startParentElement = document.getElementById('img-box')
 var imageNames = ['bag.jpg',"banana.jpg","bathroom.jpg","boots.jpg","breakfast.jpg","bubblegum.jpg","chair.jpg","cthulhu.jpg","dog-duck.jpg","dragon.jpg","pen.jpg","pet-sweep.jpg","scissors.jpg","shark.jpg","sweep.png","tauntaun.jpg","unicorn.jpg","usb.gif","water-can.jpg","wine-glass.jpg"];
 var maxVotes = 5;
 var voteOnNum = 3
 var imageObjects = [];
 var matchImages = [] ;
-
-// start game button
-    //create lable tag
-    //crate input element
-    //fill tag and elelment
-    //
-
-//for graph use only right now
 var lablesArr= [];
 var clicksArr = [];
 var looksArr = [];
 
+startGame();
 
-//constructor to make item instanaces
+function startGame(){
+    startParentElement.innerHTML = '';
+    var startElement = document.createElement("label");
+    startElement.innerHTML = "Click Me To start the game ";
+    var startButton = document.createElement('input');
+    startButton.setAttribute("type","button");
+    startElement.appendChild(startButton);
+    startParentElement.appendChild(startElement);
+    startClick();
+}
+
+function startClick(event){
+    if(localStorage.getItem('products') === null ){
+        startParentElement.innerHTML = '';
+        objectBuilder();
+        imgSet(voteOnNum);
+    }else{
+
+        retriveSaveData()
+        imgSet(voteOnNum)
+    }
+}
+startParentElement.addEventListener('click', startClick);      
+        //constructor to make item instanaces
 function Image(name){    
     this.filepath = `../img/${name}`;
-    this.alt = `${name}.alt`;
-    this.title = `${name}.alt`;
+    this.alt = `${name}`.slice(0,-4);
+    this.title = `${name}`.slice(0,-4);
     console.log(this);
     this.clicks = 0;
     this.looks = 0;
@@ -54,7 +71,7 @@ function getRandomImgs(){
     imageElement.setAttribute('src',randomImg.filepath);
     imageElement.setAttribute('alt',randomImg.alt);
     imageElement.setAttribute('title', randomImg.title);
-    parentElement.appendChild(imageElement);
+    imageparentElement.appendChild(imageElement);
     randomImg.looks++;
 }
 // pulls data out of objects and puts it in to global arrays
@@ -175,7 +192,7 @@ function compileSaveData(){
 }
 function retriveSaveData(){
     var savedVoteData = localStorage.getItem('voteingData');  
-    savedVoteData = JSON.parse(voteingData) 
+    savedVoteData = JSON.parse(voteingData);
 }
 function render(){
     renderData();
@@ -186,25 +203,26 @@ function render(){
 //imageclick handeler
 function userImageClick(){
     var alt = event.target.alt;
-    maxVotes--;
-        console.log(`event.target is ${event.target}`)
+    
+        console.log(`event.target is ${event.target.alt}`)
         if (maxVotes !== 0) {
             for (var i = 0; i < imageObjects.length; i++) {
               if (alt === imageObjects[i].alt) {
                 imageObjects[i].clicks++;
-                }       
+                maxVotes--;
+                imageparentElement.innerHTML = '';
+                imgSet(voteOnNum);
+              }
             }
-            parentElement.innerHTML = '';
-            imgSet(voteOnNum);
-            } else{
-            parentElement.innerHTML = '';
+        }else{
+            imageparentElement.innerHTML = '';
             compileSaveData();
             pullInfo();
             render();
-            };
+        };
 }
 
-objectBuilder();
-imgSet(voteOnNum);
-parentElement.addEventListener('click', userImageClick);
+// objectBuilder();
+// imgSet(voteOnNum);
+imageparentElement.addEventListener('click', userImageClick);
 
