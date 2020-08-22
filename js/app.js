@@ -24,14 +24,13 @@ function startGame(){
 };
     
 function startClick(event){
-    if(localStorage.getItem('products') === null){
-        startParentElement.innerHTML = '';
+    startParentElement.innerHTML = '';
+    if(localStorage.getItem('voteingData') === null){
         objectBuilder();
-        imgSet(voteOnNum);
     }else{
         retriveSaveData();
-        imgSet(voteOnNum);
     }
+    imgSet(voteOnNum);
 };
 //constructor to make item instanaces
 function Image(name){    
@@ -185,8 +184,7 @@ function compileSaveData(){
 };
 function retriveSaveData(){
     var savedVoteData = localStorage.getItem('voteingData');  
-    savedVoteData = JSON.parse(voteingData);
-    imageObjects = savedVoteData;
+    imageObjects = JSON.parse(savedVoteData);
     console.log(savedVoteData);
     console.log(imageObjects);
 
@@ -200,7 +198,7 @@ function render(){
 function userImageClick(){
     var alt = event.target.alt;
     console.log(`event.target is ${event.target.alt}`)
-    if (maxVotes !== 0) {
+    if(maxVotes >= 0) {
         for (var i = 0; i < imageObjects.length; i++) {
             if (alt === imageObjects[i].alt) {
             imageObjects[i].clicks++;
@@ -209,13 +207,15 @@ function userImageClick(){
             imgSet(voteOnNum);
             }
         }
-    }else{
+    }
+    else{
         compileSaveData();
         pullInfo();
         imageparentElement.innerHTML = '';
         render();
-    };
+    }
 };
+
 
 startParentElement.addEventListener('click', startClick);  
 imageparentElement.addEventListener('click', userImageClick);
