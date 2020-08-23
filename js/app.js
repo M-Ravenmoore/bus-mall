@@ -15,11 +15,9 @@ startGame();
 
 function startGame(){
     startParentElement.innerHTML = '';
-    var startElement = document.createElement("label");
+    var startElement = document.createElement("button");
     startElement.innerHTML = "Click Me To start the game ";
-    var startButton = document.createElement('input');
-    startButton.setAttribute("type","button");
-    startElement.appendChild(startButton);
+    startElement.setAttribute("type","button");
     startParentElement.appendChild(startElement);
 };
     
@@ -133,7 +131,7 @@ function graph2(){
         data: {
             labels: lablesArr,
             datasets: [{
-                label: '# of Votes',
+                label: '# of Looks',
                 data: looksArr,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
